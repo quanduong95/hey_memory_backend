@@ -2,13 +2,12 @@ import { Response, Request } from 'express';
 const { onRequest } = require('firebase-functions/v2/https');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const express = require('express');
+import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 
-const app = express();
 initializeApp();
 const db = getFirestore();
 
-app.get('/messages', async (req: Request, res: Response) => {
+exports.getMessages = onRequest(async (req: Request, res: Response) => {
   try {
     const citiesRef = db.collection('messages');
     const snapshot = await citiesRef.get();
@@ -22,13 +21,12 @@ app.get('/messages', async (req: Request, res: Response) => {
   }
 });
 
-app.put('/message/:id', async (req: Request, res: Response) => {
+exports.updateMessage = onRequest(async (req: Request, res: Response) => {
   try {
-    console.log(req.params.id);
-    const messageRef = db.collection('messages').doc(req.params.id);
+    const messageRef = db.collection('messages').doc(req.query.id);
     await messageRef.set(
       {
-        capital: true,
+        capital: false,
       },
       { merge: true }
     );
@@ -38,7 +36,7 @@ app.put('/message/:id', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/message', async (req: Request, res: Response) => {
+exports.addMessage = onRequest(async (req: Request, res: Response) => {
   try {
     const data = JSON.parse(req.body);
     await db.collection('messages').add(data);
@@ -49,4 +47,10 @@ app.post('/message', async (req: Request, res: Response) => {
   }
 });
 
-exports.routes = onRequest(app);
+exports.addMessageHandler = onDocumentCreated(
+  'messages/{messageId}',
+  (event: any) => {
+    console.log('name');
+    // perform more operations ...
+  }
+);
