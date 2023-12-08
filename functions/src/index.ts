@@ -2,7 +2,10 @@ import { Response, Request } from 'express';
 const { onRequest } = require('firebase-functions/v2/https');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import {
+  onDocumentCreated,
+  onDocumentWritten,
+} from 'firebase-functions/v2/firestore';
 
 initializeApp();
 const db = getFirestore();
@@ -49,8 +52,17 @@ exports.addMessage = onRequest(async (req: Request, res: Response) => {
 
 exports.addMessageHandler = onDocumentCreated(
   'messages/{messageId}',
-  (event: any) => {
-    console.log('name');
-    // perform more operations ...
+  async (event: any) => {
+    db.collection('add').add({
+      add: 1,
+    });
+  }
+);
+exports.updateMessageHandler = onDocumentWritten(
+  'messages/{messageId}',
+  async (event: any) => {
+    await db.collection('messages').doc('1701916204608').set({
+      update: 1,
+    });
   }
 );
