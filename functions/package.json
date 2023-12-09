@@ -18,7 +18,14 @@
     "firebase-functions": "^4.3.1"
   },
   "devDependencies": {
-    "firebase-functions-test": "^3.1.0"
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^5.3.3"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint './src/**/*{js,ts,jsx,tsx}' --fix",
+      "prettier --write './src/**/*{js,ts,jsx,tsx}'"
+    ]
   },
   "private": true
 }

@@ -19,13 +19,13 @@
     "ts:check": "tsc",
     "prepare": "husky install",
     "check-typescript": "tsc --noEmit",
-    "check-eslint": "eslint './functions/src/**/*{js,ts,jsx,tsx}'",
+    "check-eslint": "eslint '**/*{js,ts,jsx,tsx}'",
     "lint": "yarn check-typescript && yarn check-eslint"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "eslint './functions/src/**/*{js,ts,jsx,tsx}' --fix",
-      "prettier --write './functions/src/**/*{js,ts,jsx,tsx}'"
+      "eslint '**/*{js,ts,jsx,tsx}' --fix",
+      "prettier --write '**/*{js,ts,jsx,tsx}'"
     ]
   }
 }

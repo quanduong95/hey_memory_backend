@@ -13,7 +13,6 @@ export const updateUserHandler = onDocumentWritten('users/{userId}', async (even
       userId: doc._fieldsProto.userId
     })
   })
-
   //delete the tweets
   snapshot.forEach(async (doc: any) => {
     await db.collection('unrealized').doc(doc.id).delete()
