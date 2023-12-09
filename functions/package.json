@@ -7,7 +7,10 @@
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "check-typescript": "tsc --noEmit",
+    "check-eslint": "eslint './src/**/*{js,ts,jsx,tsx}'",
+    "lint": "yarn check-typescript && yarn check-eslint"
   },
   "engines": {
     "node": "18"
