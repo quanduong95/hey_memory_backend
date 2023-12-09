@@ -1,0 +1,31 @@
+{
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/node": "^20.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "eslint": "^8.55.0",
+    "eslint-config-universe": "^12.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-prettier": "5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "ts:check": "tsc",
+    "prepare": "husky install",
+    "check-typescript": "tsc --noEmit",
+    "check-eslint": "eslint './functions/src/**/*{js,ts,jsx,tsx}'",
+    "lint": "yarn check-typescript && yarn check-eslint"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint './functions/src/**/*{js,ts,jsx,tsx}' --fix",
+      "prettier --write './functions/src/**/*{js,ts,jsx,tsx}'"
+    ]
+  }
+}
