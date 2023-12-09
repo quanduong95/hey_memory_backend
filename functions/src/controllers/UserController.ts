@@ -41,7 +41,6 @@ export const updateUser = onRequest(async (req: Request, res: Response) => {
 export const addUser = onRequest(async (req: Request, res: Response) => {
   try {
     const customDocId = 'userId1';
-
     await db
       .collection('users')
       .doc(customDocId)

@@ -5,9 +5,21 @@ const db = getFirestore();
 export const updateUserHandler = onDocumentWritten(
   'users/{userId}',
   async (event: any) => {
+    // grab the tweets
     const snapshot = await db.collection('unrealized').get();
+    const unrealizedTweets: any = [];
     snapshot.forEach((doc: any) => {
-      console.log(doc);
+      unrealizedTweets.push({
+        date: doc._fieldsProto.date,
+        userId: doc._fieldsProto.userId,
+      });
+    });
+    console.log('unrealizedTweets :' + unrealizedTweets);
+
+    //delete the tweets
+    snapshot.forEach(async (doc: any) => {
+      console.log(`deleting doc id: ${doc.id}`);
+      await db.collection('unrealized').doc(doc.id).delete();
     });
   }
 );
