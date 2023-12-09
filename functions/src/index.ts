@@ -1,10 +1,6 @@
 const { initializeApp } = require('firebase-admin/app');
 initializeApp();
-import {
-  getMessages,
-  updateMessage,
-  addMessage,
-  updateMessageHandler,
-} from './controllers/mockControllers';
-
-export { getMessages, updateMessage, addMessage, updateMessageHandler };
+import { updateUserHandler } from './handlers/UserHandler';
+import { updateUser, addUser } from './controllers/UserController';
+export { updateUser, addUser };
+export { updateUserHandler };
