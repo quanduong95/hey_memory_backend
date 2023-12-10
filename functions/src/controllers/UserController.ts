@@ -1,8 +1,9 @@
-import { Response, Request } from 'express';
-const { onRequest } = require('firebase-functions/v2/https');
-const { getFirestore } = require('firebase-admin/firestore');
+import { Request, Response } from 'express'
+import { getFirestore } from 'firebase-admin/firestore'
 
-const db = getFirestore();
+const { onRequest } = require('firebase-functions/v2/https')
+
+const db = getFirestore()
 
 export const updateUser = onRequest(async (req: Request, res: Response) => {
   try {
@@ -10,8 +11,8 @@ export const updateUser = onRequest(async (req: Request, res: Response) => {
       tweetId: '08122023_tweet2',
       content: 'content2',
       userId: 'userId1',
-      date: '08122023',
-    };
+      date: '08122023'
+    }
     await db
       .collection('users')
       .doc(payload.userId)
@@ -19,25 +20,24 @@ export const updateUser = onRequest(async (req: Request, res: Response) => {
         {
           tweets: {
             '08122023_tweet2': {
-              content: 'content2',
-            },
-          },
+              content: 'content2'
+            }
+          }
         },
         {
-          merge: true,
+          merge: true
         }
-      );
+      )
 
     await db.collection('unrealized').doc(payload.tweetId).set({
       userId: payload.userId,
-      date: payload.date,
-    });
-    res.status(200).send('Update user successfully');
+      date: payload.date
+    })
+    res.status(200).send('Update user successfully')
   } catch (error) {
-    res.status(500).send('Error updating user');
-    console.log(error);
+    res.status(500).send('Error updating user')
   }
-});
+})
 export const addUser = onRequest(async (req: Request, res: Response) => {
   try {
     const customDocId = 'userId1';
@@ -52,7 +52,6 @@ export const addUser = onRequest(async (req: Request, res: Response) => {
       });
     res.status(200).send('Added user successfully');
   } catch (error) {
-    res.status(500).send('Internal error');
-    console.log(error);
+    res.status(500).send('Internal error')
   }
-});
+})
