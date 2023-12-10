@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
+import { getFirestore } from 'firebase-admin/firestore'
 
-const { getFirestore } = require('firebase-admin/firestore')
 const { onRequest } = require('firebase-functions/v2/https')
 
 const db = getFirestore()

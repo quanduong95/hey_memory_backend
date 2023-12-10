@@ -1,7 +1,8 @@
 /* eslint-disable import/first */
 /* eslint-disable import/order */
-const admin = require('firebase-admin')
-admin.initializeApp()
+import * as fireStore from '../../hey-memory-firestore'
+
+fireStore.initialize()
 
 import { addUser, updateUser } from './controllers/UserController'
 import { updateUserHandler } from './handlers/UserHandler'
