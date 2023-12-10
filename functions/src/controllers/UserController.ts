@@ -41,17 +41,15 @@ export const updateUser = onRequest(async (req: Request, res: Response) => {
 export const addUser = onRequest(async (req: Request, res: Response) => {
   try {
     const customDocId = 'userId1';
+    const customTweetId = '08122023_tweet1';
     await db
-      .collection('users')
+      .collection('user')
       .doc(customDocId)
+      .collection('tweets')
+      .doc(customTweetId)
       .set({
-        tweets: {
-          '08122023_tweet1': {
-            content: 'content1',
-          },
-        },
+        content: 'content1',
       });
-
     res.status(200).send('Added user successfully');
   } catch (error) {
     res.status(500).send('Internal error');
