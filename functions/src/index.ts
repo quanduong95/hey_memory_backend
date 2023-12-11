@@ -1,10 +1,9 @@
 /* eslint-disable import/first */
 /* eslint-disable import/order */
-import * as fireStore from '../../hey-memory-firestore'
-
-fireStore.initialize()
-
+import { initializeApp } from 'firebase-admin/app'
 import { addUser, updateUser } from './controllers/UserController'
 import { updateUserHandler } from './handlers/UserHandler'
+
+initializeApp()
 
 export { addUser, updateUser, updateUserHandler }
