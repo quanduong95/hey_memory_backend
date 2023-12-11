@@ -27,5 +27,8 @@
       "eslint '**/*{js,ts,jsx,tsx}' --fix",
       "prettier --write '**/*{js,ts,jsx,tsx}'"
     ]
+  },
+  "dependencies": {
+    "@luudvan94/hey-memory-shared-models": "1.2.2"
   }
 }
