@@ -1,5 +1,5 @@
-import { ID, Tweet } from '@luudvan94/hey-memory-shared-models'
-import { getFirestore } from 'firebase-admin/firestore'
+import { ID, Tag, Tweet } from '@luudvan94/hey-memory-shared-models'
+import { FieldValue, getFirestore } from 'firebase-admin/firestore'
 
 export type TweetContent = Omit<Tweet, 'id'>
 export type TweetWithUserID = Tweet & { userId: ID }
@@ -49,4 +49,20 @@ export const addUnrealizedTweet = async (tweet: TweetWithUserID) => {
     },
     { merge: true }
   )
+}
+
+export const updateTagsToUser = async (userId: ID, tweet: TweetWithUserID, tags: Tag[]) => {
+  for (const tag of tags) {
+    await getFirestore()
+      .collection('users')
+      .doc(userId)
+      .collection('tags')
+      .doc(tag)
+      .set(
+        {
+          tweet_ids: FieldValue.arrayUnion(tweet.id)
+        },
+        { merge: true }
+      )
+  }
 }
