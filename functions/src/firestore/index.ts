@@ -1,7 +1,9 @@
 import { ID, Tweet } from '@luudvan94/hey-memory-shared-models'
 import { getFirestore } from 'firebase-admin/firestore'
 
-type TweetContent = Omit<Tweet, 'id'>
+export type TweetContent = Omit<Tweet, 'id'>
+export type TweetWithUserID = Tweet & { userId: ID }
+
 export const getLatestUnRealizedTweet = async () => {
   const snapshot = await getFirestore()
     .collection('unrealized')
@@ -13,10 +15,12 @@ export const getLatestUnRealizedTweet = async () => {
     content: snapshot.docs[0].data().content,
     createdAt: snapshot.docs[0].data().createdAt
   }
+  const userId = snapshot.docs[0].data().userId
 
-  const unrealizedTweet: Tweet = {
+  const unrealizedTweet: TweetWithUserID = {
     id: snapshot.docs[0].id,
-    ...tweetContent
+    ...tweetContent,
+    userId
   }
 
   return unrealizedTweet
@@ -27,8 +31,7 @@ export const deleteUnRealizedTweet = async (tweetId: ID) => {
 }
 
 // only use in development
-type TweetID = ID
-export const addTweetToUser = async (userID: ID, tweet: TweetContent): Promise<TweetID> => {
+export const addTweetToUser = async (userID: ID, tweet: TweetContent): Promise<ID> => {
   const addedTweet = await getFirestore().collection('users').doc(userID).collection('tweets').add({
     content: tweet.content,
     createdAt: tweet.createdAt
@@ -37,13 +40,13 @@ export const addTweetToUser = async (userID: ID, tweet: TweetContent): Promise<T
   return addedTweet.id
 }
 
-type UserID = ID
-
-export const addUnrealizedTweet = async (userId: UserID, tweet: Tweet) => {
-  await getFirestore().collection('unrealized').add({
-    tweetID: tweet.id,
-    content: tweet.content,
-    createdAt: tweet.createdAt,
-    userId
-  })
+export const addUnrealizedTweet = async (tweet: TweetWithUserID) => {
+  await getFirestore().collection('unrealized').doc(tweet.id).set(
+    {
+      content: tweet.content,
+      createdAt: tweet.createdAt,
+      userId: tweet.userId
+    },
+    { merge: true }
+  )
 }
