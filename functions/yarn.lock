@@ -155,6 +155,11 @@
   dependencies:
     lodash "^4.17.21"
 
+"@luudvan94/hey-memory-shared-models@^1.2.6":
+  version "1.2.8"
+  resolved "https://npm.pkg.github.com/download/@luudvan94/hey-memory-shared-models/1.2.8/dc292a25b73ab1743cdc189b86fee585b2819c31#dc292a25b73ab1743cdc189b86fee585b2819c31"
+  integrity sha512-wnFcze/5VwkpThaDURRAHkoMu1SSYfDNSZNSBdg+JXPNVSpgNS4DbDt2QyU62MKgH6EzxqKd6lSEtjwbPumYiA==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
