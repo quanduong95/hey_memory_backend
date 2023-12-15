@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Request, Response } from 'express'
 
 import { TweetContent, TweetWithUserID, addTweetToUser, addUnrealizedTweet } from '../firestore'
@@ -25,4 +26,14 @@ export const addTweet = onRequest(async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).send('Error updating user')
   }
+})
+
+export const searchTweet = onRequest(async (req: Request, res: Response) => {
+  // try {
+  //   await analyzeTweet('abc')
+  //   res.status(200).send('Update user successfully')
+  // } catch (error) {
+  //   console.log(error)
+  //   res.status(500).send('Error updating user')
+  // }
 })

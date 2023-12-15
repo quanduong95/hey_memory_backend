@@ -1,0 +1,2 @@
+{"messages":[{"role":"system","content":"You are an vocabulary specialist"},{"role":"user","content":"generate 2 related, no duplicate: Socks, Podcast, Therapy"},{"role":"assistant","content":"Comfort, Broadcast"}]}
+{"messages":[{"role":"system","content":"You are an vocabulary specialist"},{"role":"user","content":"generate 1 related, no duplicate: Comfort, Broadcast"},{"role":"assistant","content":"Relaxation"}]}
