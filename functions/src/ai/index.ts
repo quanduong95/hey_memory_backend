@@ -1,36 +1,58 @@
 /* eslint-disable no-console */
 import { Content, Tag, Tweet } from '@luudvan94/hey-memory-shared-models'
 import * as openai from 'openai'
+
+import { processString } from './utils'
 require('dotenv').config()
 
 const client = new openai.OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 export const analyzeTweet = async (tweet: Tweet): Promise<Tag[]> => {
   try {
-    const sanitizedContent = await sanitizeContent(tweet.content)
+    const content = processString(tweet.content)
+    // await classifyContent(content)
+    const sanitizedContent = await sanitizeContent(content)
     // eslint-disable-next-line no-console
     const tags = await extractKeywords(sanitizedContent)
+    console.log(sanitizedContent)
     let currentTags = tags
     let count = 10
     while (currentTags.length > 1 && count > 0) {
-      const newTags = await findRelatedWords(tags, Math.floor(currentTags.length / 2))
+      const newTags = await findRelatedWords(tags, Math.ceil(currentTags.length / 2))
       currentTags = newTags
       tags.push(...newTags)
 
       count -= 1
     }
-
-    return tags.map((tag) => tag.toLowerCase())
+    console.log(tags)
+    return tags.map((tag) => tag.replace('/', ',').toLowerCase())
+    // return []
   } catch (error) {
     return []
   }
 }
 
+export const classifyContent = async (content: Content): Promise<Content> => {
+  const completion = await client.chat.completions.create({
+    model: 'ft:gpt-3.5-turbo-1106:personal::8WZzr6Em',
+    messages: [
+      { role: 'system', content: 'You can classify english words' },
+      { role: 'user', content }
+    ]
+  })
+
+  if (completion.choices.length === 0 || !completion.choices[0].message.content) {
+    throw new Error('No completion')
+  }
+  console.log(completion.choices[0].message.content)
+  return ''
+}
+
 export const sanitizeContent = async (content: Content): Promise<Content> => {
   const completion = await client.chat.completions.create({
-    model: 'ft:gpt-3.5-turbo-1106:personal::8VOFBrr4',
+    model: 'ft:gpt-3.5-turbo-1106:personal::8WQ8YUuY',
     messages: [
-      { role: 'system', content: 'You are an English specialist, correct the English sentence.' },
+      { role: 'system', content: 'You can correct English sentences.' },
       { role: 'user', content }
     ]
   })
@@ -45,7 +67,7 @@ export const sanitizeContent = async (content: Content): Promise<Content> => {
 export const findRelatedWords = async (tags: Tag[], length: number): Promise<Tag[]> => {
   const tagsString = tags.join(', ')
   const completion = await client.chat.completions.create({
-    model: 'ft:gpt-3.5-turbo-1106:personal::8VX1zb6R',
+    model: 'ft:gpt-3.5-turbo-1106:personal::8W9zbjH6',
     messages: [
       { role: 'system', content: 'You are an vocabulary specialist' },
       {
@@ -64,9 +86,9 @@ export const findRelatedWords = async (tags: Tag[], length: number): Promise<Tag
 
 export const extractKeywords = async (content: Content): Promise<Tag[]> => {
   const completion = await client.chat.completions.create({
-    model: 'ft:gpt-3.5-turbo-1106:personal::8VWmCCYn',
+    model: 'ft:gpt-3.5-turbo-1106:personal::8WQNWR24',
     messages: [
-      { role: 'system', content: 'Marv is chatbot that helps extracting keywords from a sentence' },
+      { role: 'system', content: 'You can extract important keywords from a sentence' },
       {
         role: 'user',
         content

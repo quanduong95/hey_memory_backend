@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ID, Tag, Tweet } from '@luudvan94/hey-memory-shared-models'
 import { FieldValue, getFirestore } from 'firebase-admin/firestore'
 
@@ -7,7 +8,7 @@ export type TweetWithUserID = Tweet & { userId: ID }
 export const getLatestUnRealizedTweet = async () => {
   const snapshot = await getFirestore()
     .collection('unrealized')
-    .orderBy('createdAt', 'desc')
+    .orderBy('createdAt', 'asc')
     .limit(1)
     .get()
 
