@@ -1,25 +1,22 @@
 /* eslint-disable no-console */
-import { onDocumentWritten } from 'firebase-functions/v2/firestore'
+import { onDocumentCreated } from 'firebase-functions/v2/firestore'
 
 import { analyzeTweet } from '../ai'
 import { deleteUnRealizedTweet, getLatestUnRealizedTweet, updateTagsToUser } from '../firestore'
 
-export const onNewTweetAdded = onDocumentWritten(
-  'users/{userId}/tweets/{tweetID}',
-  async (event: any) => {
-    try {
-      const latestTweet = await getLatestUnRealizedTweet()
+export const onNewTweetAdded = onDocumentCreated('unrealized/{tweetId}', async (event: any) => {
+  try {
+    const latestTweet = await getLatestUnRealizedTweet()
 
-      const analyzedTags = await analyzeTweet(latestTweet)
-      if (analyzedTags.length > 0) {
-        await updateTagsToUser(latestTweet.userId, latestTweet, analyzedTags)
-      }
+    const analyzedTags = await analyzeTweet(latestTweet)
+    if (analyzedTags.length > 0) {
+      await updateTagsToUser(latestTweet.userId, latestTweet, analyzedTags)
+    }
 
-      //delete the tweets
-      await deleteUnRealizedTweet(latestTweet.id)
-    } catch (error) {}
-  }
-)
+    //delete the tweets
+    await deleteUnRealizedTweet(latestTweet.id)
+  } catch (error) {}
+})
 
 //  const citiesRef = db.collection('messages');
 // const snapshot = await citiesRef.get();
